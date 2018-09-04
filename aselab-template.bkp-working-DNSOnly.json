@@ -83,6 +83,11 @@
         "[variables('virtualNetworkName')]"
       ],
       "properties": {
+        "dnsSettings":{
+          "dnsServers":[
+            "168.63.129.16"
+          ]
+        },        
         "ipConfigurations": [
           {
             "name": "ipconfig1",

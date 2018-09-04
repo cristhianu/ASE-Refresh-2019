@@ -27,6 +27,14 @@
         "divResult2": {
             "type": "int",
             "value": "[add(div(13, 2), 1)]"
-        }        
+        },
+        "Result": {
+            "type": "string",
+            "value": "[concat(toLower('css-ase-tr-rdp-'), toLower(uniqueString(resourceGroup().id)))]"
+        },
+        "Result2": {
+            "type": "string",
+            "value": "[concat(toLower('css-ase-tr-rdp-'), toLower(uniqueString(resourceGroup().id)))]"
+        }                            
     }
 }
