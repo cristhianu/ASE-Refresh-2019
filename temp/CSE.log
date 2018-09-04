@@ -1,0 +1,28 @@
+[3104+00000001] [08/30/2018 21:07:30.23] [INFO] Starting IaaS ScriptHandler Extension v1
+[3104+00000001] [08/30/2018 21:07:30.70] [INFO] HandlerEnvironment = Version: 1, HandlerEnvironment: [LogFolder: "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1", ConfigFolder: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\RuntimeSettings", StatusFolder: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\Status", HeartbeatFile: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\Status\HeartBeat.Json"]
+[3104+00000001] [08/30/2018 21:07:30.70] [INFO] Installing Handler
+[3104+00000001] [08/30/2018 21:07:30.72] [INFO] Handler successfully installed
+[3104+00000001] [08/30/2018 21:07:30.87] [INFO] Removing user-level access rules for 2 directories
+[3104+00000001] [08/30/2018 21:07:30.89] [INFO] Removing Users access rules from directory 'C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1'
+[3104+00000001] [08/30/2018 21:07:30.98] [INFO] Removing Users access rules from directory 'C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1'
+[3104+00000001] [08/30/2018 21:07:30.98] [INFO] Finished removing user-level access rules
+[3264+00000001] [08/30/2018 21:07:36.26] [INFO] Starting IaaS ScriptHandler Extension v1
+[3264+00000001] [08/30/2018 21:07:36.70] [INFO] HandlerEnvironment = Version: 1, HandlerEnvironment: [LogFolder: "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1", ConfigFolder: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\RuntimeSettings", StatusFolder: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\Status", HeartbeatFile: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\Status\HeartBeat.Json"]
+[3264+00000001] [08/30/2018 21:07:36.70] [INFO] Enabling Handler
+[3264+00000001] [08/30/2018 21:07:36.72] [INFO] Handler successfully enabled
+[3264+00000001] [08/30/2018 21:07:36.75] [INFO] Loading configuration for sequence number 0
+[3264+00000001] [08/30/2018 21:07:36.76] [INFO] HandlerSettings = ProtectedSettingsCertThumbprint: , ProtectedSettings: {}, PublicSettings: {FileUris: [https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vm-custom-script-windows/./Copy-FileFromAzure.ps1], CommandToExecute: powershell -ExecutionPolicy Unrestricted -File ./Copy-FileFromAzure.ps1 -artifactsLocation https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vm-custom-script-windows -artifactsLocationSasToken "" -folderName . -fileToInstall FileToBeCopied.txt}
+[3264+00000001] [08/30/2018 21:07:36.80] [INFO] Downloading files specified in configuration...
+[3264+00000001] [08/30/2018 21:07:36.91] [INFO] DownloadFiles: File not in Azure storage, fileUri = https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vm-custom-script-windows/./Copy-FileFromAzure.ps1
+[3264+00000001] [08/30/2018 21:07:36.95] [INFO] DownloadFileAsync: Downloading file to fileDownloadLocation = Downloads\0\Copy-FileFromAzure.ps1
+[3264+00000001] [08/30/2018 21:07:37.72] [INFO] Waiting for all async file download tasks to complete...
+[3264+00000001] [08/30/2018 21:07:37.73] [INFO] Files downloaded. Asynchronously executing command: 'powershell -ExecutionPolicy Unrestricted -File ./Copy-FileFromAzure.ps1 -artifactsLocation https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vm-custom-script-windows -artifactsLocationSasToken "" -folderName . -fileToInstall FileToBeCopied.txt'
+[3264+00000001] [08/30/2018 21:07:37.76] [INFO] Command execution task started. Awaiting completion...
+[3264+00000001] [08/30/2018 21:08:38.97] [INFO] Command execution finished. Command exited with code: 0
+[1756+00000001] [08/30/2018 21:17:47.87] [INFO] Starting IaaS ScriptHandler Extension v1
+[1756+00000001] [08/30/2018 21:17:48.32] [INFO] HandlerEnvironment = Version: 1, HandlerEnvironment: [LogFolder: "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1", ConfigFolder: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\RuntimeSettings", StatusFolder: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\Status", HeartbeatFile: "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.9.1\Status\HeartBeat.Json"]
+[1756+00000001] [08/30/2018 21:17:48.32] [INFO] Enabling Handler
+[1756+00000001] [08/30/2018 21:17:48.48] [INFO] Handler successfully enabled
+[1756+00000001] [08/30/2018 21:17:48.49] [INFO] Loading configuration for sequence number 0
+[1756+00000001] [08/30/2018 21:17:48.52] [INFO] HandlerSettings = ProtectedSettingsCertThumbprint: , ProtectedSettings: {}, PublicSettings: {FileUris: [https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vm-custom-script-windows/./Copy-FileFromAzure.ps1], CommandToExecute: powershell -ExecutionPolicy Unrestricted -File ./Copy-FileFromAzure.ps1 -artifactsLocation https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vm-custom-script-windows -artifactsLocationSasToken "" -folderName . -fileToInstall FileToBeCopied.txt}
+[1756+00000001] [08/30/2018 21:17:48.52] [WARN] Current sequence number, 0, is not greater than the sequence number of the most recently executed configuration. Exiting...
