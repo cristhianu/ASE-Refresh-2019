@@ -32,7 +32,11 @@
     "scriptFolder": ".",
     "scriptFileName": "CSE.ps1",
     "scriptParameters": "[concat('-UsersAmount ', variables('_usersamount'))]",
-    "DNSServerAddress": "10.11.0.4"
+    "DNSServerAddress": "10.11.0.4",
+    "RDPServersAmount": "[add(div(variables('_usersamount'), 2), 1)]",
+    "RDPServerName": "CSS-ASE-TR-RDP-",
+    "RDPpublicIPAddressName": "CSS-ASE-TR-RDP-PublicIP-",
+    "RDPnicName": "CSS-ASE-TR-RDP-Nic-"
   },
   "resources": [
     {
@@ -87,7 +91,7 @@
           "dnsServers":[
             "AzureProvidedDNS"
           ]
-        },        
+        },
         "ipConfigurations": [
           {
             "name": "ipconfig1",

@@ -23,6 +23,10 @@
         "divResult": {
             "type": "int",
             "value": "[add(div(parameters('first'), parameters('second')), 1)]"
-        }
+        },
+        "divResult2": {
+            "type": "int",
+            "value": "[add(div(13, 2), 1)]"
+        }        
     }
 }
