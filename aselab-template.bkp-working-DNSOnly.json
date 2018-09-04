@@ -58,9 +58,11 @@
             "[variables('addressPrefix')]"
           ]
         },
-        "dhcpOptions": {
-          "dnsServers": "[variables('DNSServerAddress')]"
-        },        
+        "dhcpOptions":{
+          "dnsServers":[
+            "[variables('DNSServerAddress')]"
+          ]
+        },
         "subnets": [
           {
             "name": "[variables('subnetName')]",
