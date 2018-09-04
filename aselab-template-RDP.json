@@ -89,9 +89,9 @@
       "properties": {
         "dnsSettings":{
           "dnsServers":[
-            "AzureProvidedDNS"
+            "168.63.129.16"
           ]
-        },
+        },  
         "ipConfigurations": [
           {
             "name": "ipconfig1",
