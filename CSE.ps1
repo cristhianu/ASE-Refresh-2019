@@ -18,9 +18,10 @@ Import-Module Microsoft.PowerShell.LocalAccounts
 #Add-LocalGroupMember -Group administrators -Member Test
 
 for ($i = 1; $i -lt $UsersAmount+1; $i++) {
+    $dnszonecount = $i * 2;
     Add-DnsServerPrimaryZone -Name "cssilbaseuser$i.com" -ZoneFile "cssilbaseuser$i.com.dns"
-    Add-DnsServerResourceRecordA -Name "*" -ZoneName "cssilbaseuser$i.com" -IPv4Address "10.11.$i.11" -TimeToLive 00:00:00
-    Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "cssilbaseuser$i.com" -IPv4Address "10.11.$i.11" -TimeToLive 00:00:00
+    Add-DnsServerResourceRecordA -Name "*" -ZoneName "cssilbaseuser$i.com" -IPv4Address "10.11.$dnszonecount.11" -TimeToLive 00:00:00
+    Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "cssilbaseuser$i.com" -IPv4Address "10.11.$dnszonecount.11" -TimeToLive 00:00:00
 
     New-LocalUser -Name "User$i" -Password (ConvertTo-SecureString -AsPlainText -String "No_P@ssw0rd!" -force) -AccountNeverExpires:$True -PasswordNeverExpires:$True -UserMayNotChangePassword:$True
     Add-LocalGroupMember -Group Administrators -Member "User$i"

@@ -13,25 +13,26 @@
     "adminUsername": "DNSAdmin",
     "adminPassword": "No_P@ssw0rd!",
     "_usersamount": "[parameters('UsersAmount')]",
-    "nicName": "CSS-ASE-TR-DNS-Nic",
+    "nicName": "ASE-TR-DNS-Nic",
     "addressPrefix": "10.11.0.0/16",
     "subnetName": "DefaultSubnet",
     "subnetPrefix": "10.11.0.0/24",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
-    "vmName": "CSS-ASE-TR-DNS",
-    "virtualNetworkName": "CSS-ASE-TR-VNET",
-    "publicIPAddressName": "CSS-ASE-TR-DNS-PublicIP",
-    "dnsNameForPublicIP": "[concat(toLower('css-ase-tr-dns-'), toLower(uniqueString(resourceGroup().id)))]",
+    "vmName": "ASE-TR-DNS",
+    "virtualNetworkName": "ASE-TR-VNET",
+    "publicIPAddressName": "ASE-TR-DNS-PublicIP",
+    "dnsNameForPublicIP": "[concat(toLower('ase-tr-dns-'), toLower(uniqueString(resourceGroup().id)))]",
     "scriptFolder": ".",
     "scriptFileName": "CSE.ps1",
     "scriptParameters": "[concat('-UsersAmount ', variables('_usersamount'))]",
     "DNSServerAddress": "10.11.0.4",
+    "AzureDNSServer": "168.63.129.16",
     "_location": "[resourceGroup().location]",
     "RDPServersAmount": "[add(div(variables('_usersamount'), 2), 1)]",
-    "RDPServerName": "CSS-ASE-RDP-",
-    "RDPpublicIPAddressName": "CSS-ASE-TR-RDP-PublicIP-",
-    "RDPnicName": "CSS-ASE-TR-RDP-Nic-",
-    "RDPdnsNameForPublicIP": "[toLower('css-ase-tr-rdp-')]",
+    "RDPServerName": "ASE-TR-RDP-",
+    "RDPpublicIPAddressName": "ASE-TR-RDP-PublicIP-",
+    "RDPnicName": "ASE-TR-RDP-Nic-",
+    "RDPdnsNameForPublicIP": "[toLower('ase-tr-rdp-')]",
     "RDPscriptFileName": "CSERDP.ps1"
   },
   "resources": [
@@ -85,7 +86,7 @@
       "properties": {
         "dnsSettings":{
           "dnsServers":[
-            "168.63.129.16"
+            "[variables('AzureDNSServer')]"
           ]
         },  
         "ipConfigurations": [
@@ -275,7 +276,17 @@
           }
         }
       ]
-    }    
+    },
+    {
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2017-04-01",
+      "name": "[resourceGroup().name]",
+      "properties":
+      {
+          "level": "CanNotDelete",
+          "notes": "This lock is to avoid accidental deletion of resource group."
+      }
+    }  
   ],
   "outputs": {
     "vm-fqdn": {
