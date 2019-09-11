@@ -15,9 +15,9 @@
     "_usersamount": "[parameters('UsersAmount')]",
     "nicName": "ASE-TR-DNS-Nic",
     "addressPrefix": "10.11.0.0/16",
-    "aseName1": "ASE-REFRESH-1"
-    "aseName2": "ASE-REFRESH-2"
-    "aseName3": "ASE-REFRESH-3"
+    "aseName1": "ASE-REFRESH-1",
+    "aseName2": "ASE-REFRESH-2",
+    "aseName3": "ASE-REFRESH-3",
     "subnetName": "DefaultSubnet",
     "subnetName2": "Subnet2",
     "subnetName3": "Subnet3",
