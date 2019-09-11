@@ -15,9 +15,24 @@
     "_usersamount": "[parameters('UsersAmount')]",
     "nicName": "ASE-TR-DNS-Nic",
     "addressPrefix": "10.11.0.0/16",
+    "aseName1": "ASE-REFRESH-1"
+    "aseName2": "ASE-REFRESH-2"
+    "aseName3": "ASE-REFRESH-3"
     "subnetName": "DefaultSubnet",
+    "subnetName2": "Subnet2",
+    "subnetName3": "Subnet3",
+    "subnetName4": "Subnet4",
+    "subnetName5": "Subnet5",
     "subnetPrefix": "10.11.0.0/24",
+    "subnetPrefix2": "10.11.1.0/24",
+    "subnetPrefix3": "10.11.2.0/24",
+    "subnetPrefix4": "10.11.3.0/24",
+    "subnetPrefix5": "10.11.4.0/24",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+    "subnetRef2": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName2'))]",
+    "subnetRef3": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName3'))]",
+    "subnetRef4": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName4'))]",
+    "subnetRef5": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName5'))]",
     "vmName": "ASE-TR-DNS",
     "virtualNetworkName": "ASE-TR-VNET",
     "publicIPAddressName": "ASE-TR-DNS-PublicIP",
@@ -36,6 +51,61 @@
     "RDPscriptFileName": "CSERDP.ps1"
   },
   "resources": [
+     {
+            "type": "Microsoft.Web/hostingEnvironments",
+            "apiVersion": "2016-09-01",
+            "name": "[variables('aseName1')]",
+            "location": "Central US",
+            "dependsOn": [
+            "kind": "ASEV2",
+            "zones": [
+                null
+            ],
+            "properties": {
+                "name": "[variables('aseName1')]",
+                "location": "Central US",
+                "vnetName": "ASE-REFRESH-2-vnet",
+                "vnetResourceGroupName": "ASE-REFRESH-RG",
+                "vnetSubnetName": "[concat([variables('aseName1'), '-subnet')]",
+                "virtualNetwork": {
+                    "id": "[variables('subnetRef2')]",
+                    "subnet": "[concat(parameters('hostingEnvironments_ASE_REFRESH_1_name'), '-subnet')]"
+                },
+                "internalLoadBalancingMode": "Web, Publishing",
+                "multiSize": "Standard_D1_V2",
+                "multiRoleCount": 2,
+                "ipsslAddressCount": 0,
+                "dnsSuffix": "[concat(parameters('hostingEnvironments_ASE_REFRESH_1_name'), '.appserviceenvironment.net')]",
+                "networkAccessControlList": [],
+                "frontEndScaleFactor": 15,
+                "suspended": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/hostingEnvironments/multiRolePools",
+            "apiVersion": "2016-09-01",
+            "name": "[concat(parameters('hostingEnvironments_ASE_REFRESH_1_name'), '/default')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/hostingEnvironments', parameters('hostingEnvironments_ASE_REFRESH_1_name'))]"
+            ],
+            "sku": {
+                "name": "Q1",
+                "tier": "Quantum",
+                "size": "Q1",
+                "family": "Q",
+                "capacity": 2
+            },
+            "properties": {
+                "workerSize": "Standard_D1_V2",
+                "workerCount": 2,
+                "instanceNames": [
+                    "192.168.252.9",
+                    "192.168.252.8"
+                ],
+                "mdmId": "waws-prod-dm1-5185af1d_MultiRole"
+            }
+        }
     {
       "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
