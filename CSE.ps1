@@ -15,14 +15,14 @@ Import-Module DnsServer
 Import-Module Microsoft.PowerShell.LocalAccounts
 #New-LocalUser Test -Password (ConvertTo-SecureString -AsPlainText -String "H2OBarrentA@" -force) -AccountNeverExpires:$True -PasswordNeverExpires:$True -UserMayNotChangePassword:$True
 
+Add-DnsServerPrimaryZone -Name "aserefresh.com" -ZoneFile "aserefresh.com.dns"
+Add-DnsServerResourceRecordA -Name "*" -ZoneName "aserefresh.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
+Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "aserefresh.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
+
 #Add-LocalGroupMember -Group administrators -Member Test
 
-for ($i = 1; $i -lt $UsersAmount+1; $i++) {
-    $dnszonecount = $i * 2;
-    Add-DnsServerPrimaryZone -Name "cssilbaseuser$i.com" -ZoneFile "cssilbaseuser$i.com.dns"
-    Add-DnsServerResourceRecordA -Name "*" -ZoneName "cssilbaseuser$i.com" -IPv4Address "10.11.$dnszonecount.11" -TimeToLive 00:00:00
-    Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "cssilbaseuser$i.com" -IPv4Address "10.11.$dnszonecount.11" -TimeToLive 00:00:00
-
+ for ($i = 1; $i -lt $UsersAmount+1; $i++) {
+#    $dnszonecount = $i * 2;  
     New-LocalUser -Name "User$i" -Password (ConvertTo-SecureString -AsPlainText -String "No_P@ssw0rd!" -force) -AccountNeverExpires:$True -PasswordNeverExpires:$True -UserMayNotChangePassword:$True
     Add-LocalGroupMember -Group Administrators -Member "User$i"
 }
