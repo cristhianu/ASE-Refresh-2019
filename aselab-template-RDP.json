@@ -142,7 +142,7 @@
         ],       
         "properties": {
           "name": "variables('aseName2')]",
-          "location": "[parameters('aseLocation')]",
+          "location": "[variables('_location')]",
           "ipSslAddressCount": 1,
           "virtualNetwork": {
             "Id": "[variables('subnetRef3')]",
@@ -168,7 +168,28 @@
             }
           ]
         }
-      }
+      },
+      {
+        "apiVersion": "2015-08-01",
+        "type": "Microsoft.Web/hostingEnvironments",
+        "name": "[parameters('aseName3')]",
+        "kind": "ASEV2",
+        "location": "[variables('_location')]",
+        "dependsOn": [
+             "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+        ], 
+        "properties": {
+          "name": "[parameters('aseName3')]",
+          "location": "[variables('_location')]",
+          "ipSslAddressCount": 0,
+          "internalLoadBalancingMode": 3,
+          "dnsSuffix" : "aserefresh.com",
+          "virtualNetwork": {
+            "Id": "[variables('subnetRef4')]",
+            "Subnet": "[parameters('subnetName4')]"
+          },
+        }
+      },    
     {
       "apiVersion": "2018-04-01",
       "type": "Microsoft.Network/networkInterfaces",
