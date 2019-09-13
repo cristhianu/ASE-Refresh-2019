@@ -51,63 +51,6 @@
     "RDPscriptFileName": "CSERDP.ps1"
   },
   "resources": [
-     {
-            "type": "Microsoft.Web/hostingEnvironments",
-            "apiVersion": "2016-09-01",
-            "name": "[variables('aseName1')]",
-            "location": "[variables('_location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
-            ],
-            "kind": "ASEV2",
-            "zones": [
-                null
-            ],
-            "properties": {
-                "name": "[variables('aseName1')]",
-                "location": "[variables('_location')]",
-                "vnetName": "[variables('virtualNetworkName')]",
-                "vnetResourceGroupName": "[resourceGroup().name]",
-                "vnetSubnetName": "[concat([variables('aseName1'), '-subnet')]",
-                "virtualNetwork": {
-                    "id": "[variables('subnetRef2')]",
-                    "subnet": "[variables('subnetName2')]"
-                },
-                "internalLoadBalancingMode": "Web, Publishing",
-                "multiSize": "Standard_D1_V2",
-                "multiRoleCount": 2,
-                "ipsslAddressCount": 0,
-                "dnsSuffix": "[concat(parameters('hostingEnvironments_ASE_REFRESH_1_name'), '.appserviceenvironment.net')]",
-                "networkAccessControlList": [],
-                "frontEndScaleFactor": 15,
-                "suspended": false
-            }
-        },
-        {
-            "type": "Microsoft.Web/hostingEnvironments/multiRolePools",
-            "apiVersion": "2016-09-01",
-            "name": "[concat(parameters('hostingEnvironments_ASE_REFRESH_1_name'), '/default')]",
-            "location": "Central US",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/hostingEnvironments', parameters('hostingEnvironments_ASE_REFRESH_1_name'))]"
-            ],
-            "sku": {
-                "name": "Q1",
-                "tier": "Quantum",
-                "size": "Q1",
-                "family": "Q",
-                "capacity": 2
-            },
-            "properties": {
-                "workerSize": "Standard_D1_V2",
-                "workerCount": 2,
-                "instanceNames": [
-                    "192.168.252.9",
-                    "192.168.252.8"
-                ],
-                "mdmId": "waws-prod-dm1-5185af1d_MultiRole"
-            }
-        }
     {
       "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
@@ -142,10 +85,90 @@
             "properties": {
               "addressPrefix": "[variables('subnetPrefix')]"
             }
-          }
+          },          
+          {
+            "name": "[variables('subnetName2')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix2')]"
+            }
+          },
+          {
+            "name": "[variables('subnetName3')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix3')]"
+            }
+          },
+          {
+            "name": "[variables('subnetName4')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix4')]"
+            }
+          },
+          {
+            "name": "[variables('subnetName5')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix5')]"
+            }
+          },          
         ]
       }
     },
+    {
+        "apiVersion": "2019-02-01",
+        "type": "Microsoft.Web/hostingEnvironments",            
+        "name": "[variables('aseName1')]",
+        "kind": "ASEV2",
+        "location": "[variables('_location')]",
+        "ipsslAddressCount": 0,
+        "dependsOn": [
+             "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+        ],            
+        "properties": {
+           "name": "[variables('aseName1')]",
+           "location": "[variables('_location')]",
+           "internalLoadBalancingMode": 3,                                
+           "virtualNetwork": {
+              "id": "[variables('subnetRef2')]"                   
+           },                
+        }
+     },          
+     {
+        "apiVersion": "2015-08-01",
+        "type": "Microsoft.Web/hostingEnvironments",
+        "name": "[variables('aseName2')]",
+        "location": "[variables('_location')]",
+        "dependsOn": [
+             "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+        ],       
+        "properties": {
+          "name": "variables('aseName2')]",
+          "location": "[parameters('aseLocation')]",
+          "ipSslAddressCount": 1,
+          "virtualNetwork": {
+            "Id": "[variables('subnetRef3')]",
+            "Subnet": "[parameters('subnetName3')]"
+          },
+          "multiSize": "Medium",
+          "multiRoleCount": "2",
+          "workerPools": [
+            {
+              "workerSizeId": 0,
+              "workerSize": "Small",
+              "workerCount": 0
+            },
+            {
+              "workerSizeId": 1,
+              "workerSize": "Small",
+              "workerCount": 2
+            },
+            {
+              "workerSizeId": 2,
+              "workerSize": "Small",
+              "workerCount": 0
+            }
+          ]
+        }
+      }
     {
       "apiVersion": "2018-04-01",
       "type": "Microsoft.Network/networkInterfaces",
