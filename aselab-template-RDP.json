@@ -55,21 +55,23 @@
             "type": "Microsoft.Web/hostingEnvironments",
             "apiVersion": "2016-09-01",
             "name": "[variables('aseName1')]",
-            "location": "Central US",
+            "location": "[variables('_location')]",
             "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+            ],
             "kind": "ASEV2",
             "zones": [
                 null
             ],
             "properties": {
                 "name": "[variables('aseName1')]",
-                "location": "Central US",
-                "vnetName": "ASE-REFRESH-2-vnet",
-                "vnetResourceGroupName": "ASE-REFRESH-RG",
+                "location": "[variables('_location')]",
+                "vnetName": "[variables('virtualNetworkName')]",
+                "vnetResourceGroupName": "[resourceGroup().name]",
                 "vnetSubnetName": "[concat([variables('aseName1'), '-subnet')]",
                 "virtualNetwork": {
                     "id": "[variables('subnetRef2')]",
-                    "subnet": "[concat(parameters('hostingEnvironments_ASE_REFRESH_1_name'), '-subnet')]"
+                    "subnet": "[variables('subnetName2')]"
                 },
                 "internalLoadBalancingMode": "Web, Publishing",
                 "multiSize": "Standard_D1_V2",
