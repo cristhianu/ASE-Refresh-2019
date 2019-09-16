@@ -109,7 +109,7 @@
             "properties": {
               "addressPrefix": "[variables('subnetPrefix5')]"
             }
-          },          
+          }      
         ]
       }
     },
@@ -128,7 +128,7 @@
            "internalLoadBalancingMode": 3,                                
            "virtualNetwork": {
               "id": "[variables('subnetRef2')]"                   
-           },                
+           }                
         }
      },          
      {
@@ -145,7 +145,7 @@
           "ipSslAddressCount": 1,
           "virtualNetwork": {
             "Id": "[variables('subnetRef3')]",
-            "Subnet": "[parameters('subnetName3')]"
+            "Subnet": "[variables('subnetName3')]"
           },
           "multiSize": "Medium",
           "multiRoleCount": "2",
