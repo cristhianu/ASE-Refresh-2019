@@ -140,7 +140,7 @@
              "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
         ],       
         "properties": {
-          "name": "variables('aseName2')]",
+          "name": "[variables('aseName2')]",
           "location": "[variables('_location')]",
           "ipSslAddressCount": 1,
           "virtualNetwork": {
