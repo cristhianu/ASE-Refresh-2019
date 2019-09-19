@@ -6,7 +6,8 @@ param (
 $NSGName = "ASE-TR-NSG-User"
 $RG = $ResourceGroupName
 $Location = (Get-AzureRmResourceGroup $ResourceGroupName).Location
-$SubnetConfigName = "Subnet-ILB-ASE-TR-User"
+$SubnetConfigName = "Subnet5"
+$NSGName = "Subnet5-NSG"
 
 
 # Inbound Rules
@@ -67,16 +68,12 @@ $or8 = New-AzureRmNetworkSecurityRuleConfig -Name "ASE-to-VNET" -Description "AS
     -Access Allow -Protocol * -Direction Outbound -Priority 170 -SourceAddressPrefix * `
     -SourcePortRange * -DestinationAddressPrefix 192.168.250.0/23 -DestinationPortRange * 
 
-for ($i = 1; $i -lt $UsersAmount+1; $i++) {
-    New-AzureRmNetworkSecurityGroup -Name $NSGName$i -ResourceGroupName $RG -SecurityRules $ir1,$ir2,$ir3,$ir4,$ir5,$ir6,$or1,$or2,$or3,$or4,$or5,$or6,$or7,$or8 -Location $Location
-}
+New-AzureRmNetworkSecurityGroup -Name $NSGName -ResourceGroupName $RG -SecurityRules $ir1,$ir2,$ir3,$ir4,$ir5,$ir6,$or1,$or2,$or3,$or4,$or5,$or6,$or7,$or8 -Location $Location
 
 Start-Sleep -Seconds 30
 
-for ($i = 1; $i -lt $UsersAmount+1; $i++) {
-    $UserNSG = Get-AzureRmNetworkSecurityGroup -Name ($NSGName+$i) -ResourceGroupName $RG
-    $VNet = Get-AzureRmVirtualNetwork -Name "ASE-TR-VNET" -ResourceGroupName $RG
-    $SubnetConfig = Get-AzureRmVirtualNetworkSubnetConfig -Name ($SubnetConfigName+$i) -VirtualNetwork $VNet
-    Set-AzureRmVirtualNetworkSubnetConfig -Name $SubnetConfig.Name -VirtualNetwork $VNet -AddressPrefix $SubnetConfig.AddressPrefix -NetworkSecurityGroup $UserNSG
-    $VNet | Set-AzureRmVirtualNetwork
+$VNet = Get-AzureRmVirtualNetwork -Name "ASE-TR-VNET" -ResourceGroupName $RG
+$SubnetConfig = Get-AzureRmVirtualNetworkSubnetConfig -Name ($SubnetConfigName) -VirtualNetwork $VNet
+Set-AzureRmVirtualNetworkSubnetConfig -Name $SubnetConfig.Name -VirtualNetwork $VNet -AddressPrefix $SubnetConfig.AddressPrefix -NetworkSecurityGroup $NSGName
+$VNet | Set-AzureRmVirtualNetwork
 }
