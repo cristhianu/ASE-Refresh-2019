@@ -55,7 +55,7 @@ $or4 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-Monitor" -Descriptio
     -Access Allow -Protocol * -Direction Outbound -Priority 130 -SourceAddressPrefix * `
     -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 12000
 
-$or5 = New-AzureRmNetworkSecurityRuleConfig -Name "ASE-internal-outbound" -Description "Azure Storage queue" `
+$or5 = New-AzureRmNetworkSecurityRuleConfig -Name "ASE-internal-outbound" -Description "Azure Internal Outbound" `
     -Access Allow -Protocol * -Direction Outbound -Priority 160 -SourceAddressPrefix * `
     -SourcePortRange * -DestinationAddressPrefix 10.11.4.0/24 -DestinationPortRange * 
 
