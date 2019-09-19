@@ -18,6 +18,8 @@
     "aseName1": "ASE-REFRESH-1",
     "aseName2": "ASE-REFRESH-2",
     "aseName3": "ASE-REFRESH-3",
+    "siteName": "WebAppOnASERefresh"
+    "appServicePlanName": "WebAppOnASERefresh-ASP",
     "subnetName": "DefaultSubnet",
     "subnetName2": "Subnet2",
     "subnetName3": "Subnet3",
@@ -389,7 +391,27 @@
               "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('RDPscriptFileName'), ' ', variables('scriptParameters'))]"
             }
           }
+        },
+            {
+      "apiVersion": "2016-08-01",
+      "name": "[variables('siteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "ASE Web App",
+        "usage": "Web App Hosted within ASE",
+        "category": "Web App"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',variables('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('siteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanName'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments/', variables('aseName3'))]"
         }
+      }
       ]
     },
     {
