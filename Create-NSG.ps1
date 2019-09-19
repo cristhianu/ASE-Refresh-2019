@@ -11,8 +11,8 @@ $NSGName = "Subnet5-NSG"
 
 # Inbound Rules
 $ir1 = New-AzureRmNetworkSecurityRuleConfig -Name "Inbound-management" -Description "Used to manage ASE from public VIP" `
-    -Access Allow -Protocol * -Direction Inbound -Priority 100 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 444-445
+    -Access Deny -Protocol * -Direction Inbound -Priority 100 -SourceAddressPrefix AppServiceManagement `
+    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 454-455
 
 $ir2 = New-AzureRmNetworkSecurityRuleConfig -Name "Inbound-load-balancer-port" -Description "ASE-internal-inbound" `
     -Access Allow -Protocol * -Direction Inbound -Priority 110 -SourceAddressPrefix AzureLoadBalancer `
@@ -39,43 +39,31 @@ $ir7 = New-AzureRmNetworkSecurityRuleConfig -Name "Inbound-Remote-Debugging" -De
     -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 4016-4022    
 
 # Outbound Rules
-$or1 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-443" -Description "Azure Storage queue" `
+$or1 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-80-443" -Description "HTTP/HTTPS" `
     -Access Allow -Protocol * -Direction Outbound -Priority 100 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 445
+    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 443
     
-$or2 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-SMB" -Description "Azure Storage queue" `
+$or2 = New-AzureRmNetworkSecurityRuleConfig -Name "Time-NTP" -Description "Azure Storage queue" `
     -Access Allow -Protocol * -Direction Outbound -Priority 110 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 445
+    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 123
 
 $or3 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-DB" -Description "Database" `
     -Access Allow -Protocol * -Direction Outbound -Priority 120 -SourceAddressPrefix * `
     -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 1433
     
-$or4 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-DB2" -Description "Database 2" `
+$or4 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-Monitor" -Description "Monitoring" `
     -Access Allow -Protocol * -Direction Outbound -Priority 130 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 11000-11999
-    
-$or5 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-DB3" -Description "Database 3" `
-    -Access Allow -Protocol * -Direction Outbound -Priority 140 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 14000-14999
-    
-$or6 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-DNS" -Description "DNS" `
-    -Access Allow -Protocol * -Direction Outbound -Priority 150 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 53
-    
-$or7 = New-AzureRmNetworkSecurityRuleConfig -Name "ASE-internal-outbound" -Description "Azure Storage queue" `
+    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 12000
+
+$or5 = New-AzureRmNetworkSecurityRuleConfig -Name "ASE-internal-outbound" -Description "Azure Storage queue" `
     -Access Allow -Protocol * -Direction Outbound -Priority 160 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix 10.11.4.0/24 -DestinationPortRange *
-    
-$or8 = New-AzureRmNetworkSecurityRuleConfig -Name "Outbound-80" -Description "Outbound 80" `
-    -Access Allow -Protocol * -Direction Outbound -Priority 170 -SourceAddressPrefix * `
-    -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 80
-    
-$or9 = New-AzureRmNetworkSecurityRuleConfig -Name "ASE-to-VNET" -Description "ASE to VNET" `
-    -Access Allow -Protocol * -Direction Outbound -Priority 180 -SourceAddressPrefix * `
     -SourcePortRange * -DestinationAddressPrefix 10.11.4.0/24 -DestinationPortRange * 
 
-New-AzureRmNetworkSecurityGroup -Name $NSGName -ResourceGroupName $RG -SecurityRules $ir1,$ir2,$ir3,$ir4,$ir5,$ir6,$ir7,$or1,$or2,$or3,$or4,$or5,$or6,$or7,$or8 -Location $Location
+$or6 = New-AzureRmNetworkSecurityRuleConfig -Name "Internet-Outbound" -Description "Internet Outbound" `
+    -Access Deny -Protocol * -Direction Outbound -Priority 1000 -SourceAddressPrefix * `
+    -SourcePortRange * -DestinationAddressPrefix Internet -DestinationPortRange *
+
+New-AzureRmNetworkSecurityGroup -Name $NSGName -ResourceGroupName $RG -SecurityRules $ir1,$ir2,$ir3,$ir4,$ir5,$ir6,$ir7,$or1,$or2,$or3,$or4,$or5,$or6 -Location $Location
 
 Start-Sleep -Seconds 30
 
