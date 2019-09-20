@@ -18,8 +18,10 @@
     "aseName1": "ASE-REFRESH-1",
     "aseName2": "ASE-REFRESH-2",
     "aseName3": "ASE-REFRESH-3",
-    "siteName": "WebAppOnASERefresh",
-    "appServicePlanName": "WebAppOnASERefresh-ASP",
+    "numberOfWorkersFromWorkerPool": "2",
+    "workerPool3": "3",
+    "siteName3": "WebAppOnASERefresh",
+    "appServicePlanName3": "WebAppOnASERefresh-ASP",
     "certificateName3": "DefaultCertificateFor_ASE-REFRESH-3_InternalLoadBalancingASE",
     "certificateThumbprint3": "9be260bfa86e74ecc3396829a94996e97e4b1222",
     "pfxBlobString3": "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",
@@ -399,8 +401,35 @@
       }
     }, 
     {
+      "apiVersion": "2016-09-01",
+      "name": "[variables('appServicePlanName3')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[variables('_location')]",
+      "tags": {
+        "displayName": "ASE Hosting Plan",
+        "usage": "Hosting Plan within ASE",
+        "category": "Hosting"        
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/hostingEnvironments/',variables('aseName3'))]"
+      ],
+      "properties": {
+        "name": "[variables('appServicePlanName3')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments/',variables('aseName3'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',variables('workerPool3'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',variables('workerPool3'))]",
+        "family": "I",
+        "capacity": "[variables('numberOfWorkersFromWorkerPool')]"
+      }
+    },
+    {
       "apiVersion": "2016-08-01",
-      "name": "[variables('siteName')]",
+      "name": "[variables('siteName3')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
       "tags": {
@@ -409,11 +438,11 @@
         "category": "Web App"
       },
       "dependsOn": [
-        "[concat('Microsoft.Web/serverFarms/',variables('appServicePlanName'))]"
+        "[concat('Microsoft.Web/serverFarms/',variables('appServicePlanName3'))]"
       ],
       "properties": {
-        "name": "[variables('siteName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanName'))]",
+        "name": "[variables('siteName3')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanName3'))]",
         "hostingEnvironmentProfile": {
           "id": "[resourceId('Microsoft.Web/hostingEnvironments/', variables('aseName3'))]"
         }
