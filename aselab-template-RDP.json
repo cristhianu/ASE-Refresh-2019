@@ -399,36 +399,6 @@
       }
     }, 
     {
-      "apiVersion": "2015-08-01",
-      "type": "Microsoft.Web/certificates",
-      "name": "[variables('certificateName3')]",
-      "location": "[variables('_location')]",
-      "properties": {
-          "pfxBlob": "[variables('pfxBlobString3')]",
-          "password": "[variables('password3')]",
-          "hostingEnvironmentProfile": {
-               "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName3'))]"
-          }
-      }
-    },
-    {
-        "apiVersion": "2015-08-01",
-        "type": "Microsoft.Web/hostingEnvironments",
-        "name": "[variables('aseName3')]",
-        "location": "[variables('_location')]",
-        "properties": {
-            "clusterSettings": [
-                  {
-                        "name": "DefaultSslCertificateThumbprint",
-                        "value": "[variables('certificateThumbprint3')]"
-                  }
-            ]
-        },
-        "dependsOn": [
-            "[concat('Microsoft.Web/certificates/',variables('certificateName3'))]"
-        ]
-    },
-    {
       "apiVersion": "2016-08-01",
       "name": "[variables('siteName')]",
       "type": "Microsoft.Web/sites",
@@ -458,7 +428,51 @@
           "level": "CanNotDelete",
           "notes": "This lock is to avoid accidental deletion of resource group."
       }
-    }  
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "name": "nestedTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "apiVersion": "2015-08-01",
+              "type": "Microsoft.Web/certificates",
+              "name": "[variables('certificateName3')]",
+              "location": "[variables('_location')]",
+              "properties": {
+                  "pfxBlob": "[variables('pfxBlobString3')]",
+                  "password": "[variables('password3')]",
+                  "hostingEnvironmentProfile": {
+                      "id": "[resourceId('Microsoft.Web/hostingEnvironments',variables('aseName3'))]"
+                  }
+              }  
+            },
+            {
+              "apiVersion": "2015-08-01",
+              "type": "Microsoft.Web/hostingEnvironments",
+              "name": "[variables('aseName3')]",
+              "location": "[variables('_location')]",
+              "properties": {
+                  "clusterSettings": [
+                        {
+                              "name": "DefaultSslCertificateThumbprint",
+                              "value": "[variables('certificateThumbprint3')]"
+                        }
+                  ]
+              },
+              "dependsOn": [
+                  "[concat('Microsoft.Web/certificates/',variables('certificateName3'))]"
+              ]            
+            }
+          ]
+        }
+      }  
+    }
   ],
   "outputs": {
     "vm-fqdn": {
