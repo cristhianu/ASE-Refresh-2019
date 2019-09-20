@@ -71,4 +71,3 @@ $VNet = Get-AzureRmVirtualNetwork -Name "ASE-TR-VNET" -ResourceGroupName $RG
 $SubnetConfig = Get-AzureRmVirtualNetworkSubnetConfig -Name ($SubnetConfigName) -VirtualNetwork $VNet
 Set-AzureRmVirtualNetworkSubnetConfig -Name $SubnetConfig.Name -VirtualNetwork $VNet -AddressPrefix $SubnetConfig.AddressPrefix -NetworkSecurityGroup $NSGName
 $VNet | Set-AzureRmVirtualNetwork
-}
