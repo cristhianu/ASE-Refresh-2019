@@ -473,6 +473,9 @@
               "type": "Microsoft.Web/certificates",
               "name": "[variables('certificateName3')]",
               "location": "[variables('_location')]",
+              "dependsOn": [
+                "[concat('Microsoft.Web/hostingEnvironments/',variables('aseName3'))]"
+              ],        
               "properties": {
                   "pfxBlob": "[variables('pfxBlobString3')]",
                   "password": "[variables('password3')]",
