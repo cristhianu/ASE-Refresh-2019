@@ -2,7 +2,6 @@ param (
     [string]$ResourceGroupName
 )
 
-$NSGName = "ASE-TR-NSG-User"
 $RG = $ResourceGroupName
 $Location = (Get-AzResourceGroup $ResourceGroupName).Location
 $SubnetConfigName = "Subnet5"

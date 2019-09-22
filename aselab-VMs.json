@@ -1,0 +1,271 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "UsersAmount": {
+        "type": "int",
+        "metadata": {
+          "description": "The amount of users that will be attending the training."
+        }
+      }
+  },
+  "variables": {
+    "adminUsername": "DNSAdmin",
+    "adminPassword": "No_P@ssw0rd!",
+    "_usersamount": "[parameters('UsersAmount')]",
+    "nicName": "ASE-TR-DNS-Nic",
+    "addressPrefix": "10.11.0.0/16",
+    "subnetName": "DefaultSubnet",
+    "subnetPrefix": "10.11.0.0/24",
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+    "vmName": "ASE-TR-DNS",
+    "virtualNetworkName": "ASE-TR-VNET",
+    "publicIPAddressName": "ASE-TR-DNS-PublicIP",
+    "dnsNameForPublicIP": "[concat(toLower('ase-tr-dns-'), toLower(uniqueString(resourceGroup().id)))]",
+    "scriptFolder": ".",
+    "scriptFileName": "CSE.ps1",
+    "scriptParameters": "[concat('-UsersAmount ', variables('_usersamount'))]",
+    "DNSServerAddress": "10.11.0.4",
+    "AzureDNSServer": "168.63.129.16",
+    "_location": "[resourceGroup().location]",
+    "RDPServersAmount": "[add(div(variables('_usersamount'), 2), 1)]",
+    "RDPServerName": "ASE-TR-RDP-",
+    "RDPpublicIPAddressName": "ASE-TR-RDP-PublicIP-",
+    "RDPnicName": "ASE-TR-RDP-Nic-",
+    "RDPdnsNameForPublicIP": "[toLower('ase-tr-rdp-')]",
+    "RDPscriptFileName": "CSERDP.ps1"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-06-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[variables('_location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('dnsNameForPublicIP')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "location": "[variables('_location')]",
+      "dependsOn": [
+        "[variables('publicIPAddressName')]",
+        "[variables('virtualNetworkName')]"
+      ],
+      "properties": {
+        "dnsSettings":{
+          "dnsServers":[
+            "[variables('AzureDNSServer')]"
+          ]
+        },  
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "static",
+              "privateIPAddress": "[variables('DNSServerAddress')]",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName')]",
+      "location": "[variables('_location')]",
+      "dependsOn": [
+        "[variables('nicName')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_D1_v2"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[variables('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "name": "CustomScriptExtension",
+          "apiVersion": "2017-03-30",
+          "location": "[variables('_location')]",
+          "dependsOn": [
+            "[variables('vmName')]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/Welasco/ASELab/master/./CSE.ps1"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "2017-06-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('RDPpublicIPAddressName'),copyIndex(1))]",
+      "location": "[variables('_location')]",
+      "copy": {
+        "name": "publicIPLoop",
+        "count": "[variables('RDPServersAmount')]"
+      },      
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(variables('RDPdnsNameForPublicIP'), copyIndex(1), '-', toLower(uniqueString(resourceGroup().id)))]"
+        }
+      }
+    },   
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('RDPnicName'),copyIndex(1))]",
+      "location": "[variables('_location')]",
+      "copy": {
+        "name": "nicLoop",
+        "count": "[variables('RDPServersAmount')]"
+      },      
+      "dependsOn": [
+        "[variables('nicName')]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('RDPpublicIPAddressName'),copyIndex(1))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"     
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('RDPpublicIPAddressName'), copyIndex(1)))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },     
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(variables('RDPServerName'),copyIndex(1))]",
+      "location": "[variables('_location')]",
+      "copy": {
+        "name": "vmLoop",
+        "count": "[variables('RDPServersAmount')]"
+      },      
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('RDPnicName'), copyIndex(1))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_D1_v2"
+        },
+        "osProfile": {
+          "computerName": "[concat(variables('RDPServerName'),copyIndex(1))]",
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[variables('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('RDPnicName'),copyIndex(1)))]"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "name": "CustomScriptExtension",
+          "apiVersion": "2017-03-30",
+          "location": "[variables('_location')]",  
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('RDPServerName'), copyIndex(1))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/Welasco/ASELab/master/./CSERDP.ps1"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('RDPscriptFileName'), ' ', variables('scriptParameters'))]"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2017-04-01",
+      "name": "[resourceGroup().name]",
+      "properties":
+      {
+          "level": "CanNotDelete",
+          "notes": "This lock is to avoid accidental deletion of resource group."
+      }
+    }  
+  ],
+  "outputs": {
+    "vm-fqdn": {
+      "type": "string",
+      "value": "[reference(variables('publicIPAddressName'), '2016-03-30').dnsSettings.fqdn]"
+    }
+  }
+}
