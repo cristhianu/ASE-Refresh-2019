@@ -54,8 +54,7 @@
       "name": "[variables('nicName')]",
       "location": "[variables('_location')]",
       "dependsOn": [
-        "[variables('publicIPAddressName')]",
-        "[variables('virtualNetworkName')]"
+        "[variables('publicIPAddressName')]"        
       ],
       "properties": {
         "dnsSettings":{
@@ -167,8 +166,7 @@
       },      
       "dependsOn": [
         "[variables('nicName')]",
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('RDPpublicIPAddressName'),copyIndex(1))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"     
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('RDPpublicIPAddressName'),copyIndex(1))]"           
       ],
       "properties": {
         "ipConfigurations": [
