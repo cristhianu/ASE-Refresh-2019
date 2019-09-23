@@ -28,7 +28,7 @@
     "DNSServerAddress": "10.11.0.4",
     "AzureDNSServer": "168.63.129.16",
     "_location": "[resourceGroup().location]",
-    "RDPServersAmount": "[add(div(variables('_usersamount'), 2), 1)]",
+    "RDPServersAmount": "[variables('_usersamount')]",
     "RDPServerName": "ASE-TR-RDP-",
     "RDPpublicIPAddressName": "ASE-TR-RDP-PublicIP-",
     "RDPnicName": "ASE-TR-RDP-Nic-",
