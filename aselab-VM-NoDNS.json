@@ -150,12 +150,6 @@
             "notes": "This lock is to avoid accidental deletion of resource group."
         }
       }  
-    ],
-    "outputs": {
-      "vm-fqdn": {
-        "type": "string",
-        "value": "[reference(variables('publicIPAddressName'), '2016-03-30').dnsSettings.fqdn]"
-      }
-    }
+    ]
   }
   
