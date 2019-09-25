@@ -5,7 +5,7 @@
     "UsersAmount": {
         "type": "int",
         "metadata": {
-          "description": "The amount of users that will be attending the training."
+          "description": "The amount of users that will be attending the training"
         }
       }
   },
