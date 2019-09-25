@@ -13,19 +13,14 @@
       "adminUsername": "DNSAdmin",
       "adminPassword": "No_P@ssw0rd!",
       "_usersamount": "[parameters('UsersAmount')]",
-      "nicName": "ASE-TR-DNS-Nic",
       "addressPrefix": "10.11.0.0/16",
       "subnetName": "DefaultSubnet",
       "subnetPrefix": "10.11.0.0/24",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
-      "vmName": "ASE-TR-DNS",
       "virtualNetworkName": "ASE-TR-VNET",
-      "publicIPAddressName": "ASE-TR-DNS-PublicIP",
-      "dnsNameForPublicIP": "[concat(toLower('ase-tr-dns-'), toLower(uniqueString(resourceGroup().id)))]",
       "scriptFolder": ".",
       "scriptFileName": "CSE.ps1",
       "scriptParameters": "[concat('-UsersAmount ', variables('_usersamount'))]",
-      "DNSServerAddress": "10.11.0.4",
       "AzureDNSServer": "168.63.129.16",
       "_location": "[resourceGroup().location]",
       "RDPServersAmount": "[variables('_usersamount')]",
@@ -36,109 +31,6 @@
       "RDPscriptFileName": "CSERDP.ps1"
     },
     "resources": [
-      {
-        "apiVersion": "2017-06-01",
-        "type": "Microsoft.Network/publicIPAddresses",
-        "name": "[variables('publicIPAddressName')]",
-        "location": "[variables('_location')]",
-        "properties": {
-          "publicIPAllocationMethod": "Dynamic",
-          "dnsSettings": {
-            "domainNameLabel": "[variables('dnsNameForPublicIP')]"
-          }
-        }
-      },
-      {
-        "apiVersion": "2018-04-01",
-        "type": "Microsoft.Network/networkInterfaces",
-        "name": "[variables('nicName')]",
-        "location": "[variables('_location')]",
-        "dependsOn": [
-          "[variables('publicIPAddressName')]"        
-        ],
-        "properties": {
-          "dnsSettings":{
-            "dnsServers":[
-              "[variables('AzureDNSServer')]"
-            ]
-          },  
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "privateIPAllocationMethod": "static",
-                "privateIPAddress": "[variables('DNSServerAddress')]",
-                "publicIPAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
-                },
-                "subnet": {
-                  "id": "[variables('subnetRef')]"
-                }
-              }
-            }
-          ]
-        }
-      },
-      {
-        "apiVersion": "2018-04-01",
-        "type": "Microsoft.Compute/virtualMachines",
-        "name": "[variables('vmName')]",
-        "location": "[variables('_location')]",
-        "dependsOn": [
-          "[variables('nicName')]"
-        ],
-        "properties": {
-          "hardwareProfile": {
-            "vmSize": "Standard_D1_v2"
-          },
-          "osProfile": {
-            "computerName": "[variables('vmName')]",
-            "adminUsername": "[variables('adminUsername')]",
-            "adminPassword": "[variables('adminPassword')]"
-          },
-          "storageProfile": {
-            "imageReference": {
-              "publisher": "MicrosoftWindowsServer",
-              "offer": "WindowsServer",
-              "sku": "2016-Datacenter",
-              "version": "latest"
-            },
-            "osDisk": {
-              "createOption": "FromImage"
-            }
-          },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
-              }
-            ]
-          }
-        },
-        "resources": [
-          {
-            "type": "extensions",
-            "name": "CustomScriptExtension",
-            "apiVersion": "2017-03-30",
-            "location": "[variables('_location')]",
-            "dependsOn": [
-              "[variables('vmName')]"
-            ],
-            "properties": {
-              "publisher": "Microsoft.Compute",
-              "type": "CustomScriptExtension",
-              "typeHandlerVersion": "1.8",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                  "https://raw.githubusercontent.com/cristhianu/ASELab/master/CSE.ps1"
-                ],
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
-              }
-            }
-          }
-        ]
-      },
       {
         "apiVersion": "2017-06-01",
         "type": "Microsoft.Network/publicIPAddresses",
