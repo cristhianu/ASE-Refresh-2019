@@ -140,7 +140,7 @@
         }
      },          
      {
-        "apiVersion": "2015-08-01",
+        "apiVersion": "2016-09-01",
         "type": "Microsoft.Web/hostingEnvironments",
         "name": "[variables('aseName2')]",
         "location": "[variables('_location')]",
@@ -260,7 +260,7 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
               "fileUris": [
-                "https://raw.githubusercontent.com/cristhianu/ASELab/master/./CSE.ps1"
+                "https://raw.githubusercontent.com/cristhianu/ASE-Refresh-2019/master/./CSE.ps1"
               ],
               "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
             }
@@ -371,7 +371,7 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
               "fileUris": [
-                "https://raw.githubusercontent.com/cristhianu/ASELab/master/./CSERDP.ps1"
+                "https://raw.githubusercontent.com/cristhianu/ASE-Refresh-2019/master/./CSERDP.ps1"
               ],
               "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('RDPscriptFileName'), ' ', variables('scriptParameters'))]"
             }

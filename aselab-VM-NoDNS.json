@@ -132,7 +132,7 @@
               "autoUpgradeMinorVersion": true,
               "settings": {
                 "fileUris": [
-                  "https://raw.githubusercontent.com/cristhianu/ASELab/master/CSERDP.ps1"
+                  "https://raw.githubusercontent.com/cristhianu/ASE-Refresh-2019/master/CSERDP.ps1"
                 ],
                 "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('RDPscriptFileName'), ' ', variables('scriptParameters'))]"
               }
