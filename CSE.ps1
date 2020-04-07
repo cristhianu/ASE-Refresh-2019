@@ -15,9 +15,9 @@ Import-Module DnsServer
 Import-Module Microsoft.PowerShell.LocalAccounts
 #New-LocalUser Test -Password (ConvertTo-SecureString -AsPlainText -String "H2OBarrentA@" -force) -AccountNeverExpires:$True -PasswordNeverExpires:$True -UserMayNotChangePassword:$True
 
-Add-DnsServerPrimaryZone -Name "aseTraining.com" -ZoneFile "aseTraining.com.dns"
-Add-DnsServerResourceRecordA -Name "*" -ZoneName "aseTraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
-Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "aseTraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
+Add-DnsServerPrimaryZone -Name "asetraining.com" -ZoneFile "asetraining.com.dns"
+Add-DnsServerResourceRecordA -Name "*" -ZoneName "asetraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
+Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "asetraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
 
 #Add-LocalGroupMember -Group administrators -Member Test
 
