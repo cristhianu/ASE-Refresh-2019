@@ -1,4 +1,4 @@
-<# Custom Script for Windows to install a file from Azure Storage using the staging folder created by the deployment script #>
+<# Custom Script to install DNS, create DNS Zones and records used by ASE and disabling IE Enhanced Security . #>
 param (
     [int]$UsersAmount
 )
