@@ -17,6 +17,7 @@ Import-Module Microsoft.PowerShell.LocalAccounts
 
 Add-DnsServerPrimaryZone -Name "asetraining.com" -ZoneFile "asetraining.com.dns"
 Add-DnsServerResourceRecordA -Name "*" -ZoneName "asetraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
+Add-DnsServerResourceRecordA -Name "@" -ZoneName "asetraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
 Add-DnsServerResourceRecordA -Name "*.scm" -ZoneName "asetraining.com" -IPv4Address "10.11.3.11" -TimeToLive 00:00:00
 
 #Add-LocalGroupMember -Group administrators -Member Test
