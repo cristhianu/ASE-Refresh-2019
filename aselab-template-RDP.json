@@ -395,7 +395,7 @@
         "internalLoadBalancingMode": 3,
         "dnsSuffix" : "asetraining.com",
         "virtualNetwork": {
-          "Id": "[variables('subnetRef4')]",
+          "Id": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
           "Subnet": "[variables('subnetName4')]"
         }
       }
